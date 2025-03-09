@@ -34,7 +34,7 @@ The models were evaluated based on multiple performance metrics. Below are the r
 | XGBoost           | 0.999    | 1.000      | 0.997  | 0.999     | 0.999   |
 | Genetic Algorithm | 0.999    | 0.997      | 1.000  | 0.999     | 0.999   |
 
-The **Random Forest model** outperforms the others and is chosen for deployment.
+The **Random Forest model** generally outperforms the others and is chosen for deployment.
 
 ## Project Directory Structure
 ```
