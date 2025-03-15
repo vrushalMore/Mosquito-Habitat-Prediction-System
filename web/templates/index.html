@@ -3,177 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mosquito Habitat Prediction System</title>
+    <title>Weather Data Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+            background-color: #f4f4f4;
             text-align: center;
         }
-
-        h2 {
-            color: #007BFF;
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #222;
+        .container {
+            width: 50%;
+            margin: auto;
+            background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .input-group {
-            margin: 10px 0;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        label {
+        label, select {
             display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin: 10px 0;
         }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
         button {
-            background-color: #007BFF;
+            padding: 10px 15px;
+            background: #007BFF;
             color: white;
-            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        h3 {
-            color: #00FF00;
-            margin-top: 20px;
-        }
-
-        @media screen and (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            form {
-                width: 100%;
-                padding: 15px;
-            }
-
-            .input-group {
-                width: 100%;
-            }
-
-            input {
-                font-size: 14px;
-            }
-
-            button {
-                width: 100%;
-            }
         }
     </style>
-    <script>
-        async function getPrediction() {
-            let inputData = {
-                daily_min_temp: parseFloat(document.getElementById("daily_min_temp").value),
-                daily_max_temp: parseFloat(document.getElementById("daily_max_temp").value),
-                daily_avg_temp: parseFloat(document.getElementById("daily_avg_temp").value),
-                total_precipitation: parseFloat(document.getElementById("total_precipitation").value),
-                relative_humidity: parseFloat(document.getElementById("relative_humidity").value),
-                water_bodies: parseInt(document.getElementById("water_bodies").value),
-                population_density: parseFloat(document.getElementById("population_density").value),
-                day_length: parseFloat(document.getElementById("day_length").value),
-                urban_rural_area: parseInt(document.getElementById("urban_rural_area").value),
-                forested_area: parseInt(document.getElementById("forested_area").value),
-                crop_area: parseInt(document.getElementById("crop_area").value),
-                graze_land_area: parseInt(document.getElementById("graze_land_area").value)
-            };
-
-            let response = await fetch('/predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(inputData)
-            });
-
-            let result = await response.json();
-            document.getElementById("prediction").innerText = "Prediction: " + (result.prediction === 1 ? "Habitable" : "Not Habitable");
-        }
-    </script>
 </head>
 <body>
     <div class="container">
-        <h2>Habitable Area Prediction</h2>
-        <form onsubmit="event.preventDefault(); getPrediction();">
-            <div class="input-group">
-                <label>Daily Min Temp:</label><input type="number" id="daily_min_temp" required>
-            </div>
-            <div class="input-group">
-                <label>Daily Max Temp:</label><input type="number" id="daily_max_temp" required>
-            </div>
-            <div class="input-group">
-                <label>Daily Avg Temp:</label><input type="number" id="daily_avg_temp" required>
-            </div>
-            <div class="input-group">
-                <label>Total Precipitation:</label><input type="number" id="total_precipitation" required>
-            </div>
-            <div class="input-group">
-                <label>Relative Humidity:</label><input type="number" id="relative_humidity" required>
-            </div>
-            <div class="input-group">
-                <label>Water Bodies (0 or 1):</label><input type="number" id="water_bodies" required>
-            </div>
-            <div class="input-group">
-                <label>Population Density:</label><input type="number" id="population_density" required>
-            </div>
-            <div class="input-group">
-                <label>Day Length:</label><input type="number" id="day_length" required>
-            </div>
-            <div class="input-group">
-                <label>Urban / Rural Area (0 or 1):</label><input type="number" id="urban_rural_area" required>
-            </div>
-            <div class="input-group">
-                <label>Forested Area (0 or 1):</label><input type="number" id="forested_area" required>
-            </div>
-            <div class="input-group">
-                <label>Crop Area (0 or 1):</label><input type="number" id="crop_area" required>
-            </div>
-            <div class="input-group">
-                <label>Graze Land Area (0 or 1):</label><input type="number" id="graze_land_area" required>
-            </div>
-
-            <button type="submit">Predict</button>
+        <h2>Enter Environmental Data</h2>
+        <form id="dataForm">
+            <label>What is the daily temperature?</label>
+            <select id="temperature">
+                <option value="22.53">Low</option>
+                <option value="27.41">Medium</option>
+                <option value="32.31">High</option>
+            </select>
+            
+            <label>How much total precipitation is there?</label>
+            <select id="precipitation">
+                <option value="25.08">Low</option>
+                <option value="50.14">Medium</option>
+                <option value="75.06">High</option>
+            </select>
+            
+            <label>What is the relative humidity level?</label>
+            <select id="humidity">
+                <option value="52.70">Low</option>
+                <option value="65.38">Medium</option>
+                <option value="77.69">High</option>
+            </select>
+            
+            <label>Are there any water bodies in the area?</label>
+            <select id="waterBodies">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            
+            <label>What is the population density?</label>
+            <select id="populationDensity">
+                <option value="2565.32">Low</option>
+                <option value="5030.63">Medium</option>
+                <option value="7514.82">High</option>
+            </select>
+            
+            <label>How long is the day?</label>
+            <select id="dayLength">
+                <option value="10.99">Low</option>
+                <option value="11.99">Medium</option>
+                <option value="12.99">High</option>
+            </select>
+            
+            <label>Is the area urban or rural?</label>
+            <select id="urbanRural">
+                <option value="1">Urban</option>
+                <option value="0">Rural</option>
+            </select>
+            
+            <label>Is the area forested?</label>
+            <select id="forested">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            
+            <label>Is there a crop-growing area?</label>
+            <select id="cropGrowing">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            
+            <label>Is there a grazing land area?</label>
+            <select id="grazingLand">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            
+            <button type="button" onclick="submitForm()">Submit</button>
         </form>
-
-        <h3 id="prediction"></h3>
     </div>
+
+    <script>
+        function submitForm() {
+            const formData = {
+                temperature: document.getElementById('temperature').value,
+                precipitation: document.getElementById('precipitation').value,
+                humidity: document.getElementById('humidity').value,
+                waterBodies: document.getElementById('waterBodies').value,
+                populationDensity: document.getElementById('populationDensity').value,
+                dayLength: document.getElementById('dayLength').value,
+                urbanRural: document.getElementById('urbanRural').value,
+                forested: document.getElementById('forested').value,
+                cropGrowing: document.getElementById('cropGrowing').value,
+                grazingLand: document.getElementById('grazingLand').value,
+            };
+            
+            fetch('/submit', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => alert('Data Submitted Successfully'))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>

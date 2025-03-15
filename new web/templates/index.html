@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 123, 255, 0.5);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            color: white;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        h2 {
+            color: #007BFF;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: white;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .safe {
+            color: green;
+        }
+        .dangerous {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Details for Prediction</h2>
+        <form id="predictForm">
+            <label>Daily Temperature:</label>
+            <select id="daily_avg_temp">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            
+            <label>Total Precipitation:</label>
+            <select id="total_precipitation">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            
+            <label>Relative Humidity:</label>
+            <select id="relative_humidity">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            
+            <label>Water Bodies Nearby:</label>
+            <select id="water_bodies">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            
+            <label>Population Density:</label>
+            <select id="population_density">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            
+            <label>Day Length:</label>
+            <select id="day_length">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            
+            <label>Urban or Rural:</label>
+            <select id="urban_rural_area">
+                <option value="Urban">Urban</option>
+                <option value="Rural">Rural</option>
+            </select>
+            
+            <label>Forested Area:</label>
+            <select id="forested_area">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            
+            <label>Crop Growing Area:</label>
+            <select id="crop_area">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            
+            <label>Grazing Land Area:</label>
+            <select id="graze_land_area">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            
+            <button type="button" onclick="predict()">Submit</button>
+        </form>
+        
+        <h3 id="result"></h3>
+    </div>
+    
+    <script>
+        function predict() {
+            let data = {
+                daily_avg_temp: document.getElementById("daily_avg_temp").value,
+                total_precipitation: document.getElementById("total_precipitation").value,
+                relative_humidity: document.getElementById("relative_humidity").value,
+                water_bodies: document.getElementById("water_bodies").value,
+                population_density: document.getElementById("population_density").value,
+                day_length: document.getElementById("day_length").value,
+                urban_rural_area: document.getElementById("urban_rural_area").value,
+                forested_area: document.getElementById("forested_area").value,
+                crop_area: document.getElementById("crop_area").value,
+                graze_land_area: document.getElementById("graze_land_area").value
+            };
+            
+            fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                let resultElement = document.getElementById("result");
+                if (result.prediction == 1) {
+                    resultElement.innerText = "Dangerous";
+                    resultElement.className = "dangerous";
+                } else {
+                    resultElement.innerText = "Safe";
+                    resultElement.className = "safe";
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

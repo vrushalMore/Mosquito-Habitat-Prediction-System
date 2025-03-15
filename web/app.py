@@ -4,7 +4,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-model = joblib.load("web/random_forest.pkl")
+model = joblib.load("random_forest.pkl")
 
 @app.route("/")
 def home():

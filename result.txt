@@ -1,0 +1,24 @@
+Column: Daily Avg Temp
+Low: 22.525032000000003
+Medium: 27.410064000000002
+High: 32.310032
+
+Column: Total Precipitation
+Low: 25.078705
+Medium: 50.137409999999996
+High: 75.058705
+
+Column: Relative Humidity
+Low: 52.69712799999999
+Medium: 65.384256
+High: 77.692128
+
+Column: Population Density
+Low: 2565.3161
+Medium: 5030.6322
+High: 7514.8161
+
+Column: Day Length
+Low: 10.995458
+Medium: 11.990916
+High: 12.995458
