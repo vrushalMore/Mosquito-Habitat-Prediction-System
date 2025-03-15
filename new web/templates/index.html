@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Form</title>
+    <title>Chatbot Prediction</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,40 +13,37 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            text-align: center;
+            color: white;
         }
         .container {
             background: #1e1e1e;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 123, 255, 0.5);
             max-width: 400px;
             width: 90%;
-            text-align: center;
-            color: white;
-            overflow-y: auto;
-            max-height: 90vh;
         }
         h2 {
             color: #007BFF;
+            margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
         }
         select, button {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
+            margin-top: 10px;
             border: 1px solid #007BFF;
             border-radius: 5px;
             background-color: #2a2a2a;
             color: white;
+            font-size: 16px;
         }
         button {
             background-color: #007BFF;
-            color: white;
-            font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
             border: none;
@@ -56,7 +53,7 @@
         }
         #result {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
         }
         .safe {
@@ -65,102 +62,77 @@
         .dangerous {
             color: red;
         }
+        #restartBtn {
+            display: none;
+            background-color: #ff4444;
+            margin-top: 15px;
+        }
+        #restartBtn:hover {
+            background-color: #cc0000;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Enter Details for Prediction</h2>
-        <form id="predictForm">
-            <label>Daily Temperature:</label>
-            <select id="daily_avg_temp">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
-            
-            <label>Total Precipitation:</label>
-            <select id="total_precipitation">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
-            
-            <label>Relative Humidity:</label>
-            <select id="relative_humidity">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
-            
-            <label>Water Bodies Nearby:</label>
-            <select id="water_bodies">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            
-            <label>Population Density:</label>
-            <select id="population_density">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
-            
-            <label>Day Length:</label>
-            <select id="day_length">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-            </select>
-            
-            <label>Urban or Rural:</label>
-            <select id="urban_rural_area">
-                <option value="Urban">Urban</option>
-                <option value="Rural">Rural</option>
-            </select>
-            
-            <label>Forested Area:</label>
-            <select id="forested_area">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            
-            <label>Crop Growing Area:</label>
-            <select id="crop_area">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            
-            <label>Grazing Land Area:</label>
-            <select id="graze_land_area">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            
-            <button type="button" onclick="predict()">Submit</button>
-        </form>
-        
+        <h2>Chatbot</h2>
+        <div class="question" id="question"></div>
+        <select id="response"></select>
+        <button id="nextBtn" onclick="nextQuestion()">Next</button>
         <h3 id="result"></h3>
+        <button id="restartBtn" onclick="restartQuiz()">Restart</button>
     </div>
     
     <script>
-        function predict() {
-            let data = {
-                daily_avg_temp: document.getElementById("daily_avg_temp").value,
-                total_precipitation: document.getElementById("total_precipitation").value,
-                relative_humidity: document.getElementById("relative_humidity").value,
-                water_bodies: document.getElementById("water_bodies").value,
-                population_density: document.getElementById("population_density").value,
-                day_length: document.getElementById("day_length").value,
-                urban_rural_area: document.getElementById("urban_rural_area").value,
-                forested_area: document.getElementById("forested_area").value,
-                crop_area: document.getElementById("crop_area").value,
-                graze_land_area: document.getElementById("graze_land_area").value
-            };
+        const questions = [
+            { text: "What is the daily minimum temperature?", options: ["Low", "Medium", "High"], key: "daily_min_temp" },
+            { text: "What is the daily maximum temperature?", options: ["Low", "Medium", "High"], key: "daily_max_temp" },
+            { text: "What is the daily average temperature?", options: ["Low", "Medium", "High"], key: "daily_avg_temp" },
+            { text: "How much total precipitation is there?", options: ["Low", "Medium", "High"], key: "total_precipitation" },
+            { text: "What is the relative humidity level?", options: ["Low", "Medium", "High"], key: "relative_humidity" },
+            { text: "Are there any water bodies in the area?", options: ["Yes", "No"], key: "water_bodies" },
+            { text: "What is the population density?", options: ["Low", "Medium", "High"], key: "population_density" },
+            { text: "How long is the day?", options: ["Low", "Medium", "High"], key: "day_length" },
+            { text: "Is the area urban or rural?", options: ["Urban", "Rural"], key: "urban_rural_area" },
+            { text: "Is the area forested?", options: ["Yes", "No"], key: "forested_area" },
+            { text: "Is there a crop-growing area?", options: ["Yes", "No"], key: "crop_area" },
+            { text: "Is there a grazing land area?", options: ["Yes", "No"], key: "graze_land_area" }
+        ];
+
+        let currentQuestion = 0;
+        let userData = {};
+        
+        function nextQuestion() {
+            if (currentQuestion > 0) {
+                userData[questions[currentQuestion - 1].key] = document.getElementById("response").value;
+            }
             
+            if (currentQuestion < questions.length) {
+                document.getElementById("question").innerText = questions[currentQuestion].text;
+                
+                let responseElement = document.getElementById("response");
+                responseElement.innerHTML = "";
+                questions[currentQuestion].options.forEach(option => {
+                    let optionElement = document.createElement("option");
+                    optionElement.value = option;
+                    optionElement.textContent = option;
+                    responseElement.appendChild(optionElement);
+                });
+                
+                currentQuestion++;
+            } else {
+                document.getElementById("question").style.display = "none";
+                document.getElementById("response").style.display = "none";
+                document.getElementById("nextBtn").style.display = "none";
+                document.getElementById("restartBtn").style.display = "block";
+                submitPrediction();
+            }
+        }
+        
+        function submitPrediction() {
             fetch("/predict", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                body: JSON.stringify(userData)
             })
             .then(response => response.json())
             .then(result => {
@@ -175,6 +147,19 @@
             })
             .catch(error => console.error("Error:", error));
         }
+        
+        function restartQuiz() {
+            currentQuestion = 0;
+            userData = {};
+            document.getElementById("question").style.display = "block";
+            document.getElementById("response").style.display = "block";
+            document.getElementById("nextBtn").style.display = "block";
+            document.getElementById("restartBtn").style.display = "none";
+            document.getElementById("result").innerText = "";
+            nextQuestion();
+        }
+        
+        nextQuestion();
     </script>
 </body>
 </html>
