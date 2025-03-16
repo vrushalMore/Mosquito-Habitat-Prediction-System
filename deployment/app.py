@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 
-model = joblib.load("../web/random_forest.pkl")
+model = joblib.load("random_forest.pkl")
 
 mapping = {
     "Low": {"daily_avg_temp": 22.53, "total_precipitation": 25.08, "relative_humidity": 52.70, "population_density": 2565.32, "day_length": 11.00},
